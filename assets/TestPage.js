@@ -7,14 +7,13 @@ import {
   TouchableOpacity,
   Dimensions,
   StyleSheet,
-  ScrollView,
-  ActivityIndicator
 } from 'react-native'
 
 const { width } = Dimensions.get('window')
 import {PullView} from 'react-native-pull';
-import TopViewPage from './common/TopViewPage'
-var ReactNative = require('react-native');
+import TopViewPage from './common/TopViewPage';
+import RCTDeviceEventEmitter from "RCTDeviceEventEmitter";
+
 export default class MsgPage extends Component {
   constructor(props){
     super(props);
@@ -28,12 +27,15 @@ export default class MsgPage extends Component {
 
 
   componentDidMount(){
-  
+    
     this.watchID = navigator.geolocation.watchPosition((position) => {
       var lastPosition = JSON.stringify(position);
       this.setState({lastPosition});  
     },{enableHighAccuracy: true});
 
+  }
+  componentWillUnmount(){
+    RCTDeviceEventEmitter.emit("testEvent",this.state.lastPosition)
   }
 
 

@@ -17,6 +17,7 @@ import TopViewPage from './common/TopViewPage'
 import MsgPage from './common/MsgPage'
 import PersonDetailPage from './PersonDetailPage'
 import TestPage from './TestPage'
+import RCTDeviceEventEmitter from "RCTDeviceEventEmitter";
 
 export default class MyPage extends Component {
   constructor(props){
@@ -49,7 +50,7 @@ export default class MyPage extends Component {
     })
  }
   componentDidMount(){
-   
+   RCTDeviceEventEmitter.addListener("testEvent",(e)=>{alert(e)})
   }
 
   render () {
