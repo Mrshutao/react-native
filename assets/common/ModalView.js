@@ -119,11 +119,11 @@ export default class ModalView extends Component {
                <View style={[styles.modalStyle, modalBackgroundStyle]}>
                  <View style={[styles.subView, innerContainerTransparentStyle]}>
 
-                   <Text style={{marginVertical:20,color:"#000",fontSize:16,textAlign:"center",}}>
+                   <Text style={{marginVertical:15,color:"#000",fontSize:16,textAlign:"center",}}>
                     {this.props.warnTitle}
                    </Text>
 
-                   <Text style={{marginBottom:20,color:"#4b4b4b",fontSize:15,textAlign:this.props.contentAlign,}}>
+                   <Text style={{marginBottom:15,color:"#4b4b4b",fontSize:15,textAlign:this.props.contentAlign,}}>
                     {this.props.warnText}
                    </Text>
                    <View style={styles.horizontalLine} />
@@ -148,8 +148,8 @@ var styles = StyleSheet.create({
   },
   // modal上子View的样式
   subView:{
-    marginLeft:width/15,
-    marginRight:width/15,
+    marginLeft:width/10,
+    marginRight:width/10,
     backgroundColor:'#fff',
     alignSelf: 'stretch',
     justifyContent:'center',
@@ -175,7 +175,7 @@ var styles = StyleSheet.create({
 
   buttonStyle:{
     flex:1,
-    height:50,
+    height:40,
     alignItems: 'center',
     justifyContent:'center',
 
@@ -184,7 +184,7 @@ var styles = StyleSheet.create({
   // 竖直的分割线
   verticalLine:{
     width:0.5,
-    height:50,
+    height:40,
     backgroundColor:'#e5e5e5',
     alignSelf:"flex-start"
   },

@@ -11,6 +11,7 @@ import Swiper from 'react-native-swiper'
 const { width } = Dimensions.get('window')
 import TopViewPage from './common/TopViewPage'
 import MsgPage from './common/MsgPage'
+import Utils from "./common/Utils"
 
 export default class HomePage extends Component {
   constructor(props){
@@ -52,10 +53,29 @@ export default class HomePage extends Component {
   }
 
   _toMsg(){
-  let self=this;
+ /* let self=this;
   self.navigator.push({
     component:MsgPage
-    })
+    })*/
+
+ storage.load({
+    key: 'loginState',
+  }).then(ret => {
+
+    alert(ret.userid);
+    
+  }).catch(err => {
+    
+    console.log(err.message);
+    switch (err.name) {
+        case 'NotFoundError':
+            // TODO;
+            break;
+        case 'ExpiredError':
+            // TODO
+            break;
+    }
+  })
  }
 
   fetchData() {
@@ -79,6 +99,16 @@ export default class HomePage extends Component {
                     console.log("Fetch failed!", e);
                   });
       }
+
+setValue(){
+  storage.save({
+    key: 'loginState',  // 注意:请不要在key中使用_下划线符号!
+    rawData: { 
+      userid: '123456',
+      passwords: 'shutao'
+    },
+  });
+  }
   
 
   render () {
@@ -107,7 +137,7 @@ export default class HomePage extends Component {
         </View>
 
           <View style={{paddingVertical:14,flexDirection:"row",backgroundColor:"#fff",borderBottomWidth:0.2,borderColor:"#ddd"}}>
-            <TouchableOpacity activeOpacity={0.5} style={styles.middle_item}>
+            <TouchableOpacity activeOpacity={0.5} style={styles.middle_item} onPress={()=>this.setValue()}>
               <Image source={this.itemsImg[0]} style={styles.middle_img}/>
               <Text style={styles.middle_text}>金币商城</Text>
             </TouchableOpacity>

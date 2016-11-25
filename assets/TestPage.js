@@ -3,23 +3,33 @@ import React, { Component } from 'react'
 import {
   Text,
   View,
-  Image,
   TouchableOpacity,
   Dimensions,
   StyleSheet,
+  ListView,
+
 } from 'react-native'
 
 const { width } = Dimensions.get('window')
 import {PullView} from 'react-native-pull';
 import TopViewPage from './common/TopViewPage';
+import Utils from './common/Utils';
+import LocationPage from './test/LocationPage';
+import LongPressPage from './test/LongPressPage';
+import CalendarPage from './test/CalendarPage';
 import RCTDeviceEventEmitter from "RCTDeviceEventEmitter";
 
 export default class MsgPage extends Component {
   constructor(props){
     super(props);
+    this.navigator=this.props.navigator;
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state={
-       initialPosition: 'unknown',
-       lastPosition: 'unknown',
+       dataSource:[{title:"Location"},
+                  {title:"LongPress"},
+                  {title:"Calendar"},]
+                  
+
       }
     }
 
@@ -27,15 +37,39 @@ export default class MsgPage extends Component {
 
 
   componentDidMount(){
-    
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      var lastPosition = JSON.stringify(position);
-      this.setState({lastPosition});  
-    },{enableHighAccuracy: true});
-
+   
   }
-  componentWillUnmount(){
-    RCTDeviceEventEmitter.emit("testEvent",this.state.lastPosition)
+  _onPressButton(id){  
+    switch(id){
+      case "0":
+        this.navigator.push({component:LocationPage});
+        break;
+      case "1":
+        this.navigator.push({component:LongPressPage});
+        break;
+      case "2":
+        this.navigator.push({component:CalendarPage});
+        break;
+      default:
+        Utils.toast("正在开发中");
+        break;
+    }
+  }
+
+
+  _renderRow(rowData,sectionId,rowId){
+ 
+    return(
+     
+            <TouchableOpacity onPress={()=>this._onPressButton(rowId)}
+                         style={{flexDirection:"row",height:60,borderBottomWidth:0.5,height:40,
+                          borderColor:"#ddd",alignItems:"center",justifyContent:"center"}}>
+              
+              <Text style={{fontSize:16,color:"#333"}}>{rowData.title}</Text>
+            </TouchableOpacity
+            >
+
+      )
   }
 
 
@@ -48,44 +82,23 @@ export default class MsgPage extends Component {
           leftTxt="测试"
           navigator={this.props.navigator}
           showRight={false}/>
-        <View style={{flex:1,padding:14,backgroundColor:"#f4f4f4"}}>
+      
+           <ListView
+               scrollEnabled={true}
+               contentContainerStyle={{paddingBottom:5,}}
+               dataSource={this.ds.cloneWithRows(this.state.dataSource)}
+               renderRow={this._renderRow.bind(this)}
+               enableEmptySections={true}/>
 
-            <Text>
-              <Text style={styles.title}>Initial position: </Text>
-              {this.state.initialPosition}
-            </Text>
-            <Text>
-              <Text style={styles.title}>Current position: </Text>
-              {this.state.lastPosition}
-            </Text>
-          </View>
+ 
+  
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
- top:{
-  height:80,
-  borderBottomWidth:0.5,
-  borderColor:"#ddd",
-  justifyContent:"center"
- },
- wrapNormal:{
-  flex:1,
-  alignItems:"center",
-  justifyContent:"center"
- },
- wrapActive:{
-  flex:1,
-  alignItems:"center",
-  justifyContent:"center",
-  backgroundColor:"#ddd"
- },
- tabTitle:{
-  fontSize:14,
-  color:"#333"
- }
+
 
 
 })

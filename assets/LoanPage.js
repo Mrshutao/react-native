@@ -11,6 +11,7 @@ const { width } = Dimensions.get('window')
 import TopViewPage from './common/TopViewPage'
 import MsgPage from './common/MsgPage'
 import ModalView from './common/ModalView'
+import Utils from './common/Utils'
 
 export default class LoanPage extends Component {
   constructor(props){
@@ -37,7 +38,7 @@ export default class LoanPage extends Component {
   }
 
   _callBack(){
-    ReactNative.ToastAndroid.show("激活成功！",ReactNative.ToastAndroid.SHORT);
+   Utils.toast("激活成功！")
   }
   
   render () {
